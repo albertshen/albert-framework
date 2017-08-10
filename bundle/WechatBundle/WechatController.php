@@ -30,12 +30,15 @@ class WechatController extends Controller
 			if($access_token->scope == 'snsapi_base') {
 				$user = $userAPI->userLogin($access_token->openid);
 				if(!$user) {
-					$userAPI->userRegister($access_token->openid);
+					$userAPI->userRegister($access_token);
 				}
 			} 
 			if($access_token->scope == 'snsapi_userinfo') {
 				$user_info = $wechatAPI->getSnsUserInfo($access_token->openid, $access_token->access_token);
-				$userAPI->updateUser($user_info);
+				$user = $userAPI->userLogin($user_info->openid);
+				if(!$user) {
+					$userAPI->userRegister($user_info);
+				}
 			}	
 			$this->redirect($url);
 		}
