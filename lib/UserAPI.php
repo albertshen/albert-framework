@@ -107,7 +107,8 @@ class UserAPI extends Base {
     $province = isset($userinfo->province) ? $userinfo->province : '';
     $country = isset($userinfo->country) ? $userinfo->country : '';
     $headimgurl = isset($userinfo->headimgurl) ? $userinfo->headimgurl : '';
-    $sql = "INSERT INTO `user` SET `openid` = :openid, `nickname` = :nickname, `sex` = :sex, `city` = :city, `province` = :province, `country` = :country, `headimgurl` = :headimgurl, `created` = :created, `updated` = :updated";
+    $unionid = isset($userinfo->unionid) ? $userinfo->unionid : '';
+    $sql = "INSERT INTO `user` SET `openid` = :openid, `nickname` = :nickname, `sex` = :sex, `city` = :city, `province` = :province, `country` = :country, `headimgurl` = :headimgurl, `unionid` = :unionid, `created` = :created, `updated` = :updated";
     $query = $this->_pdo->prepare($sql);   
     $res = $query->execute(
       array(
@@ -118,6 +119,7 @@ class UserAPI extends Base {
         ':province' => $province,
         ':country' => $country,
         ':headimgurl' => $headimgurl,
+        ':unionid' => $unionid,
         ':created' => $nowtime,
         ':updated' => $nowtime,
       )

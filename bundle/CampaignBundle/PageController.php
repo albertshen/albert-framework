@@ -15,7 +15,10 @@ class PageController extends Controller
 	}
 
 	public function clearCookieAction() {
-		setcookie('_user', '', time(), '/');
+		$domain = $_SERVER['HTTP_HOST'];
+		$port = strpos($domain, ':');
+		if ( $port !== false ) $domain = substr($domain, 0, $port);
+		setcookie('_user', '', time(), '/', $domain);
 		$this->statusPrint('success');
 	}
 }
