@@ -39,7 +39,7 @@ class WechatController extends Controller
 			}	
 			$this->redirect($url);
 		}
-		return $this->Response($access_token);
+		return $this->Response(json_encode($access_token));
 	}
 
 	public function simulationLoginAction() {

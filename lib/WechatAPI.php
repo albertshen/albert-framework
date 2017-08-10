@@ -56,7 +56,7 @@ class WechatAPI {
 
 	public function getSnsAccessToken($code) {
 		$applink = "https://api.weixin.qq.com/sns/oauth2/access_token?code=%s&grant_type=authorization_code&appid=%s&secret=%s";
-		$url = sprintf($applink, $code, APPID, SCOPE);
+		$url = sprintf($applink, $code, APPID, APPSECRET);
 		$return = file_get_contents($url);
 		return json_decode($return);
 	}
