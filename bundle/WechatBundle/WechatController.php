@@ -70,7 +70,6 @@ class WechatController extends Controller
 	 */
 	public function jssdkConfigJsAction()
 	{
-		$_SERVER['HTTP_REFERER'] = 'http://127.0.0.1:9001/asf';
 		$url = isset($_SERVER['HTTP_REFERER']) ? $_SERVER['HTTP_REFERER'] : '';
 		$debug = isset($_GET['debug']) ? (bool) $_GET['debug'] : false;
 	  	$this->hostValid($url, JSSDK_ACCESS);
