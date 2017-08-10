@@ -162,7 +162,7 @@ class UserAPI extends Base {
    */  
   public function updateUser($userinfo) {
     $nowtime = NOWTIME;
-    $sql = "UPDATE `user` SET `nickname` = :nickname, `sex` = :sex, `city` = :city, `province` = :province, `country` = :country, `headimgurl` = :headimgurl, `updated` = :updated WHERE `openid` = :openid";    
+    $sql = "UPDATE `user` SET `nickname` = :nickname, `sex` = :sex, `city` = :city, `province` = :province, `country` = :country, `unionid` = :unionid, `headimgurl` = :headimgurl, `updated` = :updated WHERE `openid` = :openid";    
     $query = $this->_pdo->prepare($sql);    
     $res = $query->execute(
       array(
