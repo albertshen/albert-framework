@@ -7,7 +7,7 @@
 #
 # Host: 127.0.0.1 (MySQL 5.7.18-0ubuntu0.16.04.1)
 # Database: campaign
-# Generation Time: 2017-08-10 08:03:38 +0000
+# Generation Time: 2017-08-10 10:41:24 +0000
 # ************************************************************
 
 
@@ -54,6 +54,7 @@ CREATE TABLE `user` (
   `province` varchar(255) DEFAULT '',
   `headimgurl` varchar(255) DEFAULT '',
   `country` varchar(255) DEFAULT '',
+  `unionid` varchar(255) DEFAULT NULL,
   `created` datetime DEFAULT NULL,
   `updated` datetime DEFAULT NULL,
   PRIMARY KEY (`uid`),

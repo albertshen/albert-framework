@@ -173,12 +173,12 @@ class UserAPI extends Base {
         ':province' => $userinfo->province,
         ':country' => $userinfo->country,
         ':headimgurl' => $userinfo->headimgurl,
+        ':unionid' => $userinfo->unionid,
         ':updated' => $nowtime,
       )
     );
     if($res) {
       return true;
-      //var_dump($query->rowCount());exit;
     }
     return false;
   }

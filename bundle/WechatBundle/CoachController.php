@@ -34,7 +34,7 @@ class CoachController extends Controller
 		$data = json_decode($data);
 		if($data->code = 200) {
 			$userAPI = new UserAPI();
-			$userAPI->updateUser($data->data);
+			$userAPI->updateUser((Object)$data->data);
 		} else {
 			$this->statusPrint('error');
 		}

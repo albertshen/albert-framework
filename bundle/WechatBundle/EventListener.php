@@ -5,7 +5,7 @@ namespace WechatBundle;
 use Core\Request;
 use Core\Event;
 use Lib\UserAPI;
-use Lib\CurioWechatAPI;
+use Lib\CoachWechatAPI;
 
 class EventListener 
 {
