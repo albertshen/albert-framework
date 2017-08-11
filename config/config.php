@@ -9,13 +9,9 @@ define("ENV", 'dev');
 
 //User
 define("USER_STORAGE", 'COOKIE');
-define("USER_LOAD_MORE", true);
 
 //Wechat Vendor
 define("WECHAT_VENDOR", 'default'); // default | coach
-
-//Wechat Vendor
-define("CALLBACK_CODE", true); // true | false
 
 //Wechat config info
 define("TOKEN", 'xxx');

@@ -54,6 +54,11 @@ class UserAPI extends Base {
     return FALSE;
   }
 
+  public function userRegister($userinfo){
+    $user = $this->insertUser($userinfo);
+    return $this->userLoginFinalize($user);
+  }
+
   public function userLoginFinalize($user) {
     if(USER_STORAGE == 'COOKIE') {
       $request = new Request();
@@ -62,11 +67,6 @@ class UserAPI extends Base {
       $_SESSION['_user'] = json_encode($user);
     }
     return $user;
-  }
-
-  public function userRegister($userinfo){
-    $user = $this->userSave($userinfo);
-    return $this->userLoginFinalize($user);
   }
 
   public function oauthAction($redirect_uri) {
@@ -87,7 +87,7 @@ class UserAPI extends Base {
 
   public function decodeUser($string) {
     $string = base64_decode($string, TRUE);
-    $helper = new helper();
+    $helper = new Helper();
     $data = $helper->aes128_cbc_decrypt(ENCRYPT_KEY, $string, ENCRYPT_IV);
     $user = json_decode($data);
     return $user;
@@ -102,10 +102,12 @@ class UserAPI extends Base {
     $userinfo->created = $userinfo->updated = date('Y-m-d H:i:s');
     $res = $helper->saveTable('user', $userinfo, 'openid');
     if($res) {
-      $openid = $res === true ? $userinfo->openid : $res;
-      return $this->findUserByOpenid($openid);
+      if($res === true)
+        return $this->findUserByOpenid($openid);
+      else
+        return $this->findUserByUid($res);
     }
-    return $false;
+    return false;
   }
 
   /**
