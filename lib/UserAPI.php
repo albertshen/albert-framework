@@ -3,6 +3,7 @@
 namespace Lib;
 
 use Core\Response;
+use Core\Request;
 use Core\Router;
 
 class UserAPI extends Base {
@@ -55,10 +56,8 @@ class UserAPI extends Base {
 
   public function userLoginFinalize($user) {
     if(USER_STORAGE == 'COOKIE') {
-      $domain = $_SERVER['HTTP_HOST'];
-      $port = strpos($domain, ':');
-      if ( $port !== false ) $domain = substr($domain, 0, $port);
-      setcookie('_user', $this->encodeUser($user), time() + 3600 * 24 * 100, '/', $domain);
+      $request = new Request();
+      setcookie('_user', $this->encodeUser($user), time() + 3600 * 24 * 100, '/', $request->getDomain());
     } else {
       $_SESSION['_user'] = json_encode($user);
     }
@@ -81,52 +80,80 @@ class UserAPI extends Base {
   }
 
   public function encodeUser($data) {
-    $help = new Help();
-    $data = base64_encode($help->aes128_cbc_encrypt(ENCRYPT_KEY, json_encode($data), ENCRYPT_IV));
+    $helper = new helper();
+    $data = base64_encode($helper->aes128_cbc_encrypt(ENCRYPT_KEY, json_encode($data), ENCRYPT_IV));
     return $data;
   }
 
   public function decodeUser($string) {
     $string = base64_decode($string, TRUE);
-    $help = new Help();
-    $data = $help->aes128_cbc_decrypt(ENCRYPT_KEY, $string, ENCRYPT_IV);
+    $helper = new helper();
+    $data = $helper->aes128_cbc_decrypt(ENCRYPT_KEY, $string, ENCRYPT_IV);
     $user = json_decode($data);
     return $user;
   }
- 
+
   /**
-   * Create user in database
-   */
-  public function insertUser($userinfo){
-    $nowtime = NOWTIME;
-    $openid = isset($userinfo->openid) ? $userinfo->openid : '';
-    $nickname = isset($userinfo->nickname) ? $userinfo->nickname : '';
-    $sex = isset($userinfo->sex) ? $userinfo->sex : '';
-    $city = isset($userinfo->city) ? $userinfo->city : '';
-    $province = isset($userinfo->province) ? $userinfo->province : '';
-    $country = isset($userinfo->country) ? $userinfo->country : '';
-    $headimgurl = isset($userinfo->headimgurl) ? $userinfo->headimgurl : '';
-    $unionid = isset($userinfo->unionid) ? $userinfo->unionid : '';
-    $sql = "INSERT INTO `user` SET `openid` = :openid, `nickname` = :nickname, `sex` = :sex, `city` = :city, `province` = :province, `country` = :country, `headimgurl` = :headimgurl, `unionid` = :unionid, `created` = :created, `updated` = :updated";
-    $query = $this->_pdo->prepare($sql);   
-    $res = $query->execute(
-      array(
-        ':openid' => $openid,
-        ':nickname' => $nickname,
-        ':sex' => $sex,
-        ':city' => $city,
-        ':province' => $province,
-        ':country' => $country,
-        ':headimgurl' => $headimgurl,
-        ':unionid' => $unionid,
-        ':created' => $nowtime,
-        ':updated' => $nowtime,
-      )
-    );    
+  * Save user in database
+  */ 
+  public function userSave($userinfo) {
+    $userinfo = $this->userNormailize($userinfo);
+    $helper = new Helper();
+    $userinfo->created = $userinfo->updated = date('Y-m-d H:i:s');
+    $res = $helper->saveTable('user', $userinfo, 'openid');
     if($res) {
-      return $this->findUserByUid($this->_pdo->lastinsertid());
+      $openid = $res === true ? $userinfo->openid : $res;
+      return $this->findUserByOpenid($openid);
     }
-    return NULL;
+    return $false;
+  }
+
+  /**
+  * Create user in database
+  */
+  public function insertUser($userinfo){
+    $userinfo = $this->userNormailize($userinfo);
+    $helper = new Helper();
+    $userinfo->created = $userinfo->updated = date('Y-m-d H:i:s');
+    $uid = $helper->insertTable('user', $userinfo);
+    if($uid) {
+      return $this->findUserByUid($uid);
+    }
+    return null;
+  }
+
+  /**
+   * Update user in database
+   */  
+  public function updateUserByOpenid($userinfo) {
+    $userinfo = $this->userNormailize($userinfo);
+    $helper = new Helper();
+    $condition = array(
+      array('openid', $userinfo->openid, '='),
+      );
+    $userinfo->updated = date('Y-m-d H:i:s');
+    return $helper->updateTable('user', $userinfo, $condition);
+  }
+
+  public function userNormailize($userinfo) {
+    $user = new \stdClass();
+    if(isset($userinfo->openid)) 
+      $user->openid = $userinfo->openid;
+    if(isset($userinfo->nickname)) 
+      $user->nickname = $userinfo->nickname;
+    if(isset($userinfo->sex)) 
+      $user->sex = $userinfo->sex; 
+    if(isset($userinfo->city)) 
+      $user->city = $userinfo->city; 
+    if(isset($userinfo->province)) 
+      $user->province = $userinfo->province; 
+    if(isset($userinfo->country)) 
+      $user->country = $userinfo->country; 
+    if(isset($userinfo->headimgurl)) 
+      $user->headimgurl = $userinfo->headimgurl; 
+    if(isset($userinfo->unionid)) 
+      $user->unionid = $userinfo->unionid; 
+    return $user;
   }
 
   /**
@@ -157,29 +184,4 @@ class UserAPI extends Base {
     return NULL;
   }
 
-  /**
-   * Update user in database
-   */  
-  public function updateUser($userinfo) {
-    $nowtime = NOWTIME;
-    $sql = "UPDATE `user` SET `nickname` = :nickname, `sex` = :sex, `city` = :city, `province` = :province, `country` = :country, `unionid` = :unionid, `headimgurl` = :headimgurl, `updated` = :updated WHERE `openid` = :openid";    
-    $query = $this->_pdo->prepare($sql);    
-    $res = $query->execute(
-      array(
-        ':openid' => $userinfo->openid,
-        ':nickname' => $userinfo->nickname,
-        ':sex' => $userinfo->sex,
-        ':city' => $userinfo->city,
-        ':province' => $userinfo->province,
-        ':country' => $userinfo->country,
-        ':headimgurl' => $userinfo->headimgurl,
-        ':unionid' => $userinfo->unionid,
-        ':updated' => $nowtime,
-      )
-    );
-    if($res) {
-      return true;
-    }
-    return false;
-  }
 }

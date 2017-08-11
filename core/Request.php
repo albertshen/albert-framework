@@ -39,6 +39,12 @@ class Request
 		return $this->server;
 	}
 
+	public function getDomain() {
+		$domain = $_SERVER['HTTP_HOST'];
+		$port = strpos($domain, ':');
+		if ( $port !== false ) $domain = substr($domain, 0, $port);
+		return $domain;
+	}
 	public function getUrl($absolute = false){
 		if($absolute) {
 			return $url = 'http://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
