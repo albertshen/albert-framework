@@ -11,7 +11,7 @@ class EventListener
 	{
 		global $user;	
 		$info = $this->getUserInfo($user->uid);
-		$user->nickname = $info->nickname; //add some additional field 
+		//$user->nickname = $info->nickname; //add some additional field 
 	}
 
 	public function getUserInfo($uid)
