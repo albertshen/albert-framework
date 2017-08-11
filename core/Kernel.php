@@ -47,7 +47,10 @@ class Kernel
 
 	public function initialize()
 	{
-		$this->dispatcher->addListener('kernel.request', array(new \WechatBundle\EventListener(), 'initUser'));
+		if(WECHAT_CAMPAIGN)
+			$this->dispatcher->addListener('kernel.request', array(new \WechatBundle\EventListener(), 'initUser'));
+		else
+			$this->dispatcher->addListener('kernel.request', array(new \CampaignBundle\EventListener(), 'initUser'));
 		$this->dispatcher->addListener('kernel.request', array(new \CampaignBundle\EventListener(), 'extendUser'));
 		//$this->dispatcher->addListener('kernel.request', new CampaignBundle\Listerner());
 	}

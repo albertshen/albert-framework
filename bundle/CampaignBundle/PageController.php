@@ -19,4 +19,7 @@ class PageController extends Controller
 		setcookie('_user', '', time(), '/', $request->getDomain());
 		$this->statusPrint('success');
 	}
+
+
+
 }

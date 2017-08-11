@@ -10,6 +10,9 @@ define("ENV", 'dev');
 //User
 define("USER_STORAGE", 'COOKIE');
 
+//
+define("WECHAT_CAMPAIGN", false);
+
 //Wechat Vendor
 define("WECHAT_VENDOR", 'default'); // default | coach
 
