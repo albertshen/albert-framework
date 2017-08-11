@@ -65,7 +65,7 @@ class UserAPI extends Base {
   }
 
   public function userRegister($userinfo){
-    $user = $this->insertUser($userinfo);
+    $user = $this->userSave($userinfo);
     return $this->userLoginFinalize($user);
   }
 
