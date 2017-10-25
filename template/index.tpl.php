@@ -52,7 +52,7 @@ wx.ready(function(){
 			title: 'xxxxxx',
 			t_title: 'xxxxxxx',
 			link: location.href,
-			img: "http://" + window.location.host + "/src/img/share.jpg",
+			img: "http://" + window.location.host + "/assets/img/share.jpg",
 			desc: 'xxxxxxx'
 		}, function(env){
 			//callback fun
