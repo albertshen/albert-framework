@@ -5,5 +5,9 @@
     		"Core\\": "core",
     		"Lib\\": "lib"
     	}
+    },
+    "require": {
+        "albertshen/wechat": "^1.1",
+        "php-ffmpeg/php-ffmpeg": "^0.9.5"
     }
 }

@@ -13,8 +13,8 @@ class EventListener
 	{
 		global $user;
 		$this->request = $event->getRequest();
-		$UserAPI = new UserAPI();
-		$user = $UserAPI->userLoad();
+		$userAPI = new UserAPI();
+		$user = $userAPI->userLoad();
 		if(!$user->uid) {
 			$helper = new Helper();
 			$user_info = new \stdClass();
