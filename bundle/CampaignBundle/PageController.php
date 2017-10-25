@@ -12,7 +12,6 @@ class PageController extends Controller
 		//var_dump($user);exit;
 		$wechatAPI = new WechatAPI();
 		$config = $wechatAPI->jssdkShortConfig($this->request->getUrl(TRUE));
-		var_dump($config);exit;
 		return $this->render('index', array('config' => $config));
 	}
 

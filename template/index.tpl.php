@@ -17,17 +17,18 @@
 	<meta name="Keywords" content="">
 	<meta name="Description" content="...">
 
-	<link rel='stylesheet' type='text/css' href="/src/css/reset.css">
-	<link rel='stylesheet' type='text/css' href="/src/css/common.css">
-	<link rel='stylesheet' type='text/css' href="/src/css/main.css">
+	<link rel='stylesheet' type='text/css' href="/assets/css/reset.css">
+	<link rel='stylesheet' type='text/css' href="/assets/css/common.css">
+	<link rel='stylesheet' type='text/css' href="/assets/css/main.css">
 	<script>
 
 	</script>
 	<script type="text/javascript" src="https://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
-	<script type="text/javascript" src="src/js/jquery.js"></script>
-	<script type="text/javascript" src="src/js/rem.js"></script>
-	<script type="text/javascript" src="src/js/main.js"></script>
-	<script type="text/javascript" src="src/js/share.js"></script>
+	<script type="text/javascript" src="assets/js/jquery.js"></script>
+	<script type="text/javascript" src="assets/js/rem.js"></script>
+	<script type="text/javascript" src="assets/js/common.js"></script>
+	<script type="text/javascript" src="assets/js/main.js"></script>
+	<script type="text/javascript" src="assets/js/share.js"></script>
 </head>
 <body>
 
@@ -44,7 +45,7 @@
 </div>
 
 <script>
-wechatShareConfig(<?php print $config; ?>);
+<?php print $config; ?>
 
 wx.ready(function(){
 	wechatShare({
