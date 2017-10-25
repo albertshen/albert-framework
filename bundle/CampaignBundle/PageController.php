@@ -3,14 +3,16 @@
 namespace CampaignBundle;
 
 use Core\Controller;
+use Lib\WechatAPI;
 
 class PageController extends Controller
 {
 	public function indexAction() {
 		global $user;
-		var_dump($user);exit;
-		$RedisAPI = new \Lib\RedisAPI();
-		$config = $RedisAPI->jssdkConfig($this->request->getUrl(TRUE));
+		//var_dump($user);exit;
+		$wechatAPI = new WechatAPI();
+		$config = $wechatAPI->jssdkShortConfig($this->request->getUrl(TRUE));
+		var_dump($config);exit;
 		return $this->render('index', array('config' => $config));
 	}
 
@@ -19,7 +21,4 @@ class PageController extends Controller
 		setcookie('_user', '', time(), '/', $request->getDomain());
 		$this->statusPrint('success');
 	}
-
-
-
 }
