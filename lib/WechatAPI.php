@@ -183,6 +183,7 @@ class WechatAPI {
 		$jsApi = $this->getJSApiTicketFromWechat();
 		if($jsApi){
 			$config = $this->jssdkConfig($url, $jsApi->ticket, $debug);
+			$jsConfig = json_encode($config, JSON_UNESCAPED_UNICODE);
     		$key_value = <<<EOF
 var script = document.createElement('script');
 script.onload = function() {
