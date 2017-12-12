@@ -29,15 +29,15 @@ class Router
             return;
 		}
 		foreach($routers as $router => $callbackConfig) {
-			$pattern = '/' . preg_replace(array('/\//', '/%/'), array('\/', '(.*)'), $router) . '$/';
+			$pattern = '/^' . preg_replace(array('/\//', '/%/'), array('\/', '(.*)'), $router) . '$/';
 			if(preg_match($pattern, $current_router, $matches)  && $router != '/') {
 				unset($matches[0]);
 				$class = $callbackConfig[0].'Controller';
 				$callback = [new $class, $callbackConfig[1].'Action'];
 				$this->callback = $callback;
-				$this->param = $matches;
+				$this->param = $matches;//var_dump($pattern);exit;
 				return;
-			}			
+			}		
 		}
 	}
 
